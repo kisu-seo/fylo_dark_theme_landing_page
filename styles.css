@@ -1,0 +1,164 @@
+/* ========================================================
+   1. 물감 팔레트 준비 (CSS 변수) 
+   ======================================================== */
+:root {
+  /* 색상 (Colors) */
+  --color-navy-950: hsl(216, 53%, 9%);    /* 푸터 배경 */
+  --color-navy-900: hsl(218, 28%, 13%);   /* 메인 배경 */
+  --color-navy-850: hsl(217, 28%, 15%);   /* 이메일 입력 박스 배경 */
+  --color-navy-800: hsl(219, 30%, 18%);   /* 추천사(Testimonials) 카드 배경 */
+  --color-navy-50:  hsl(222, 36%, 91%);
+  
+  --color-blue-300: hsl(177, 67%, 63%);   /* 강조 텍스트 */
+  --color-blue-250: hsl(186, 61%, 72%);
+  --color-red-500:  hsl(0, 100%, 63%);    /* 에러 메시지 */
+  
+  --color-white:    hsl(0, 100%, 100%);
+  --color-black:    hsl(0, 0%, 0%);
+  --color-gray-400: hsl(0, 0%, 75%);
+
+  /* 버튼 그라데이션 */
+  --gradient-start: hsl(176, 68%, 64%);
+  --gradient-end:   hsl(198, 60%, 50%);
+
+  /* 여백 (Spacing) - 1rem을 16px 기준으로 생각합니다 */
+  --spacing-100: 0.5rem;
+  --spacing-200: 1rem;
+  --spacing-300: 1.5rem;
+  --spacing-400: 2rem;
+  --spacing-500: 2.5rem;
+  --spacing-600: 3rem;
+  --spacing-700: 3.5rem;
+  --spacing-800: 4rem;
+  --spacing-900: 4.5rem;
+  --spacing-1000: 5rem;
+}
+
+/* ========================================================
+   2. 도화지 초기화 (Reset & Base Styles)
+   ======================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* 패딩을 넣어도 박스 크기가 커지지 않게 방지합니다 */
+}
+
+body {
+  font-family: 'Open Sans', sans-serif; /* 기본 본문 폰트 */
+  font-size: 14px;
+  background-color: var(--color-navy-900);
+  color: var(--color-white);
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif; /* 제목 폰트 */
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-white);
+}
+
+ul {
+  list-style: none; /* 리스트 앞의 점(불릿)을 지워줍니다 */
+}
+
+img {
+  max-width: 100%;
+  display: block; /* 이미지 하단에 미세한 공백이 생기는 걸 막아줍니다 */
+}
+
+/* ========================================================
+   3. 공통 레이아웃 구조 (Mobile First 원칙!)
+   ======================================================== */
+.container {
+  width: 100%;
+  max-width: 1440px; /* 데스크탑 최대 너비 제한 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 0 var(--spacing-400); /* 모바일: 좌우 기본 여백 */
+}
+
+/* 반복해서 쓰는 버튼이나 텍스트 스타일을 유틸리티로 만들어 둡니다 */
+.btn-primary {
+  background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  color: var(--color-white);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  border: none;
+  border-radius: 30px; /* 둥근 버튼을 만듭니다 */
+  padding: var(--spacing-200) var(--spacing-600);
+  cursor: pointer;
+}
+
+/* ========================================================
+   4. 섹션별 뼈대 (모바일 기준 - 1단 세로 배치)
+   ======================================================== */
+.header {
+  padding: var(--spacing-400) 0;
+}
+
+.header__nav-list {
+  display: flex;
+  gap: var(--spacing-200); /* 메뉴 글씨 사이 간격 띄우기 */
+}
+
+/* 메인 소개 구역 */
+.hero {
+  text-align: center;
+  padding: var(--spacing-800) 0;
+}
+
+/* 주요 특징 구역 (CSS Grid 활용!) */
+.features {
+  padding: var(--spacing-800) 0;
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 모바일에서는 1줄에 1개씩! */
+  gap: var(--spacing-800);
+  text-align: center;
+}
+
+/* 추천사 구역 */
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-400);
+  padding: var(--spacing-800) 0;
+}
+
+/* 이메일 구독 폼 구역 (가운데 떠있는 느낌을 위해 절대 위치 활용 예정) */
+.early-access {
+  background-color: var(--color-navy-850);
+  border-radius: 10px;
+  text-align: center;
+  padding: var(--spacing-500);
+  margin-top: var(--spacing-1000);
+}
+
+/* 푸터 구역 */
+.footer {
+  background-color: var(--color-navy-950);
+  padding: var(--spacing-1000) 0;
+}
+
+/* ========================================================
+   5. 반응형 미디어 쿼리 (화면이 넓어졌을 때 발동!)
+   ======================================================== */
+
+/* 태블릿 사이즈 (768px 이상) */
+@media (min-width: 768px) {
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr); /* 2단 배열로 쫙! */
+  }
+}
+
+/* 데스크탑 사이즈 (1024px 이상) */
+@media (min-width: 1024px) {
+  .testimonials__grid {
+    grid-template-columns: repeat(3, 1fr); /* 추천사 3장을 한 줄에 쫙! */
+  }
+}
