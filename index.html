@@ -22,32 +22,38 @@
 <body>
 
   <!-- ==============================================
-       1. 헤더 (로고 & 네비게이션바) 
+       1. 일러스트 & 헤더 영역 (배경 분리를 위한 Wrapper)
        ============================================== -->
-  <header class="header">
-    <div class="container header__container">
-      <a href="#" class="logo" aria-label="메인 페이지로 돌아가기">
-        <img src="./images/logo.svg" alt="Fylo Logo" class="logo__img">
-      </a>
-      <nav class="nav">
-        <!-- aria-label을 사용해서 시각장애인 분들도 메뉴 목록임을 알 수 있게 배려합니다 -->
-        <ul class="header__nav-list" aria-label="메인 네비게이션">
-          <li><a href="#" class="nav__link">Features</a></li>
-          <li><a href="#" class="nav__link">Team</a></li>
-          <li><a href="#" class="nav__link">Sign In</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  <div class="bg-curvy-top">
+    <header class="header">
+      <div class="container header__container">
+        <a href="#" class="logo" aria-label="메인 페이지로 돌아가기">
+          <img src="./images/logo.svg" alt="Fylo Logo" class="logo__img">
+        </a>
+        <nav class="nav">
+          <ul class="header__nav-list" aria-label="메인 네비게이션">
+            <li><a href="#" class="nav__link">Features</a></li>
+            <li><a href="#" class="nav__link">Team</a></li>
+            <li><a href="#" class="nav__link">Sign In</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
-  <main class="main">
-    <!-- ==============================================
-         2. 히어로 (메인 첫인상) 섹션 
-         ============================================== -->
-    <section class="hero">
+    <div class="hero-illustration">
       <div class="container hero__container">
         <!-- 그림은 의미 전달보다 꾸밈에 가까우므로 aria-hidden="true"로 스크린 화면 낭독기가 읽지 않게 패스! -->
         <img src="./images/illustration-intro.png" alt="" class="hero__image" aria-hidden="true">
+      </div>
+    </div>
+  </div>
+
+  <main class="main">
+    <!-- ==============================================
+         2. 히어로 (메인 첫인상) 텍스트 섹션 
+         ============================================== -->
+    <section class="hero-content">
+      <div class="container hero__container">
         <h1 class="hero__title">All your files in one secure location, accessible anywhere.</h1>
         <p class="hero__desc">Fylo stores all your most important files in one secure location. Access them wherever you
           need, share and collaborate with friends family, and co-workers.</p>
