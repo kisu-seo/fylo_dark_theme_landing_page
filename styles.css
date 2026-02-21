@@ -112,6 +112,9 @@ img {
     /* 너비 설정 */
     width: 240px;
 
+    /* 그림자 설정 (X 2px, Y 3px, Blur 6px, 시안에 맞춘 불투명도 15.93%의 검은색 그림자) */
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.1593);
+
     /* Text Preset 4 적용 */
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
@@ -177,6 +180,8 @@ img {
     text-align: center;
     padding: 0;
     /* 패딩을 0으로 설정하여 여백을 제거합니다 */
+    margin-bottom: 140px;
+    /* 본문 아래쪽 여백 140px 추가 */
 }
 
 .hero__image {
@@ -206,38 +211,441 @@ img {
 
 /* 주요 특징 구역 (CSS Grid 활용!) */
 .features {
-    padding: var(--spacing-800) 0;
+    padding: 0;
+    /* 패딩을 0으로 설정하여 기본 여백 제거 */
+    margin-bottom: 160px;
+    /* 특징 섹션 하단에 160px 여백 추가 */
 }
 
 .features__grid {
     display: grid;
     grid-template-columns: 1fr;
     /* 모바일에서는 1줄에 1개씩! */
-    gap: var(--spacing-800);
+    row-gap: var(--spacing-800);
+    /* 세로(행) 간격 */
+    column-gap: var(--spacing-1000);
+    /* 가로(열) 간격 80px 설정 */
+    justify-items: center;
+    /* 아이템들을 가로 중앙으로 정렬 */
     text-align: center;
 }
 
+.feature__icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-300);
+    /* 가로 중앙 정렬 및 하단 여백 24px(spacing-300) 설정 */
+    object-fit: contain;
+    /* 비율을 유지하면서 80x80 박스 안에 쏙 넣습니다 */
+}
+
+.feature__title {
+    /* Text Preset 2 적용 */
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-100);
+    /* 하단 여백 8px 설정 */
+}
+
+.feature__desc {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+}
+
+/* 생산성 구역 */
+.productivity {
+    padding: 0;
+    /* 기본 패딩을 제거하여 여백을 초기화합니다 */
+    margin-bottom: 150px;
+    /* 다음 섹션과의 간격을 150px로 설정합니다 */
+}
+
+.productivity__image {
+    margin-bottom: var(--spacing-600);
+    /* 하단 바깥 여백 48px 추가 */
+    display: block;
+    /* 마진 자동 계산을 위해 블록 요소로 설정 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.productivity__title {
+    /* Text Preset 3 (Bold) 적용 */
+    font-family: 'Raleway', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-200);
+    /* 하단 바깥 여백 16px 추가 */
+    text-align: left;
+}
+
+.productivity__desc {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: var(--spacing-200);
+    /* 하단 여백 16px 설정 */
+    text-align: left;
+}
+
+.productivity__link {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+
+    color: var(--color-blue-300);
+    /* 요청하신 포인트 색상(Cyan) 적용 */
+    border-bottom: 1px solid var(--color-blue-300);
+    /* 아이콘까지 포함하도록 하단 테두리로 선을 그립니다 */
+    padding-bottom: 2px;
+    /* 글자와 선 사이의 미세한 간격 */
+
+    display: inline-flex;
+    /* 화살표 아이콘과 가로로 예쁘게 배치합니다 */
+    align-items: center;
+    /* 세로축 중앙 정렬 */
+    gap: 8px;
+    /* 글자와 화살표 사이 간격 */
+    transition: opacity 0.3s ease;
+    /* 부드러운 호버 효과를 위한 설정 */
+}
+
+.productivity__link:hover {
+    opacity: 0.7;
+    /* 마우스를 올렸을 때 살짝 투명해지는 효과 */
+}
+
+.productivity__link-icon {
+    width: 12px;
+    height: 12px;
+    /* 화살표 아이콘의 크기를 12px로 맞췄습니다 */
+}
+
 /* 추천사 구역 */
+.testimonials {
+    margin-bottom: 150px;
+    /* 다음 섹션과의 간격을 150px로 넉넉히 띄워줍니다 */
+}
+
+.testimonials__container {
+    padding: 0 var(--spacing-600);
+    /* 좌우 패딩을 48px로 설정합니다 */
+}
+
 .testimonials__grid {
     display: grid;
     grid-template-columns: 1fr;
+    /* 모바일(Mobile) 화면에서는 카드 1개씩 1줄(세로)로 배치합니다 */
     gap: var(--spacing-400);
-    padding: var(--spacing-800) 0;
+    /* 각 추천사 카드 사이의 세로 간격을 32px로 벌려줍니다 */
+
+    /* 1. 왼쪽 상단 구석에 커다란 따옴표(") 디자인 이미지를 배경으로 넣습니다 */
+    background-image: url('./images/bg-quotes.png');
+    background-repeat: no-repeat;
+    /* 따옴표 이미지가 타일처럼 반복되지 않게 한 번만 보여줍니다 */
+    background-position: top 0 left 5px;
+    /* 따옴표 이미지를 위에서 0, 왼쪽에서 5px 정도 슬쩍 띄워서 배치합니다 */
+    background-size: 32px auto;
+    /* 배경 이미지(따옴표)의 너비를 32px로 조절하고, 높이는 원본 비율에 맞게 자동으로 설정합니다 */
+
+    padding-top: 20px;
+    /* 첫 번째 카드가 따옴표 아이콘을 가리지 않도록, 패딩(안쪽 여백)으로 카드 전체 묶음을 35px 밑으로 밀어 내립니다 */
+    margin-top: -20px;
+    /* 패딩으로 늘어난 35px 만큼 바깥 여백(margin-top)을 마이너스로 주어, 따옴표 이미지만 위로 툭 튀어나오게 전체를 당겨 올립니다 */
+}
+
+/* ========================================================
+   2. 개별 추천사 카드 디자인 (박스 형태)
+   ======================================================== */
+.testimonial-card {
+    background-color: var(--color-navy-800);
+    /* 카드의 배경색을 바깥보다 살짝 밝은 네이비로 설정해 카드가 눈에 띄게 합니다 */
+    border-radius: 3.93px;
+    /* 모서리 4군데를 둥글게(5px) 깎아서 딱딱하지 않고 부드러운 박스로 만듭니다 */
+    padding: 23px 20px;
+    /* 박스 안쪽 여백: 위아래 23px, 좌우 20px로 조정하여 카드 내부 공간을 설정합니다 */
+    box-shadow: 0 0 8px 4px rgba(56, 56, 56, 0.0459);
+    /* 카드를 은은하게 감싸는 그림자 설정: X 0, Y 0, 흐림(Blur) 8px, 확산(Spread) 4px, 색상 #383838, 불투명도 4.59% */
+}
+
+/* 3. 카드 안쪽의 평가(리뷰) 본문 텍스트 */
+.testimonial-card__desc {
+    /* Text Preset 9 (Regular) 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 10px;
+    /* 10px로 아주 작게 설정하여 보조적인 느낌을 줍니다 (이미지보다 작을 수 있으니 확인해 보세요!) */
+    font-weight: 400;
+    line-height: 1.8;
+    /* 줄 간격을 180%로 넉넉히 주어 가독성을 높입니다 */
+    letter-spacing: 0.5px;
+    /* 글자 사이 간격을 살짝 벌려 줍니다 */
+
+    margin-bottom: var(--spacing-200);
+    /* 리뷰 글과 아랫쪽 프로필 구간 사이의 간격을 16px로 좁혔습니다 */
+}
+
+/* 4. 카드 하단의 작성자 정보를 묶은 그룹 (사진 + 텍스트 정렬) */
+.testimonial-card__author {
+    display: flex;
+    /* 프로필 동그란 사진과, 그 옆의 이름/직책 텍스트를 나란히 '가로'로 정렬하는 마법 상자(Flex)입니다! */
+    align-items: center;
+    /* 가로 정렬된 사진과 텍스트를 세로축 기준 한가운데로 딱 맞춰 줍니다 */
+    gap: 8px;
+    /* 사진과 텍스트 사이의 틈새(간격)를 적당히 8px 벌려 줍니다 */
+}
+
+/* 작성자의 동그란 아바타 프로필 사진 */
+.author__avatar {
+    width: 24px;
+    /* 가로 24px */
+    height: 24px;
+    /* 세로 24px 크기의 작은 사진입니다 */
+    border-radius: 50%;
+    /* 24x24 네모 박스의 모서리를 완전히 둥글려 예쁜 '동그라미'로 만듭니다! */
+    object-fit: cover;
+    /* 사진이 틀 안에서 찌그러지지 않게 꽉 채워줍니다 */
+}
+
+/* 사진 오른쪽의 '이름'과 '직책'을 세로로 묶는 통 */
+.author__info {
+    display: flex;
+    flex-direction: column;
+    /* 정보들이 좌우가 아닌, '이름' 위 '직책' 아래 순서로 '세로 탑'처럼 쌓이도록 방향을 바꿉니다 */
+    justify-content: center;
+    /* 세로 통 안에서 글씨들이 위아래 한가운데 정렬되게 맞춥니다 */
+}
+
+/* 작성자 이름 텍스트 (강조) */
+.author__name {
+    /* Text Preset 9 (Bold) 적용 */
+    font-family: 'Open Sans', sans-serif;
+    /* 성격에 맞춰 본문용 폰트로 변경했습니다 */
+    font-size: 10px;
+    /* 이름 크기를 10px로 맞췄습니다 */
+    font-weight: 700;
+    /* 이름을 두껍게(Bold) 강조하여 눈에 띄게 합니다 */
+    line-height: 1.5;
+    /* 줄 간격을 150%로 설정합니다 */
+    letter-spacing: 0.5px;
+    /* 글자 사이를 살짝 띄워 가독성을 높였습니다 */
+}
+
+/* 작성자 직책 텍스트 (흐리게) */
+.author__role {
+    /* Text Preset 10 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 7px;
+    /* 7px로 아주 작게 설정하여 정보의 위계를 조절합니다 (매우 작으니 가독성을 꼭 확인해 보세요!) */
+    font-weight: 400;
+    line-height: 1.5;
+    /* 줄 간격을 150%로 설정합니다 */
+    letter-spacing: 0.5px;
+    /* 글자 사이를 살짝 띄워 줍니다 */
+    color: var(--color-white);
+    /* 차분한 회색으로 설정해 시선이 이름에 먼저 가게 합니다 */
 }
 
 /* 이메일 구독 폼 구역 (가운데 떠있는 느낌을 위해 절대 위치 활용 예정) */
 .early-access {
     background-color: var(--color-navy-850);
-    border-radius: 10px;
+    border-radius: 9px;
     text-align: center;
-    padding: var(--spacing-500);
-    margin-top: var(--spacing-1000);
+    margin: 0 20px;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2543);
+    /* 요청하신 그림자 설정: X 5px, Y 5px, 흐림 8px, 검은색(000000) 불투명도 25.43% */
+
+    position: relative;
+    /* 자리가 겹칠 때 누가 먼저 보일지 순서(z-index)를 정하기 위해 기준점 역할을 켭니다! */
+    z-index: 1;
+    /* 밑에서 올라오는 푸터 배경보다 이 박스가 화면에서 더 앞쪽으로 튀어나오게(1층으로) 올립니다 */
+}
+
+.early-access__container {
+    padding: 40px 24px;
+    /* 박스 안쪽 여백: 위아래 40px, 좌우 24px로 설정하여 콘텐츠가 답답하지 않게 공간을 줍니다 */
+}
+
+.early-access__title {
+    /* Text Preset 2 적용 */
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+    /* 제목 크기를 20px로 설정합니다 */
+    font-weight: 700;
+    /* 제목을 두껍게 강조합니다 */
+    line-height: 1.2;
+    /* 줄 간격을 120%로 설정하여 제목답게 촘촘하게 만듭니다 */
+    margin-bottom: var(--spacing-200);
+    /* 제목과 아래 설명글 사이의 간격을 16px로 띕니다 */
+}
+
+.early-access__desc {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    /* 본문 크기(14px)로 설정합니다 */
+    font-weight: 400;
+    /* 일반적인 두께로 편안하게 읽히도록 합니다 */
+    line-height: 1.5;
+    /* 줄 간격을 150%로 설정해 가독성을 높입니다 */
+    margin-bottom: var(--spacing-400);
+    /* 설명글과 아래 입력 폼 사이의 간격을 32px로 띕니다 */
+}
+
+/* 폼 요소들을 세로로 예쁘게 정렬합니다 */
+.early-access__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-300);
+    /* 입력창과 버튼 사이를 24px 띕니다 */
+}
+
+/* 이메일 입력창을 버튼과 똑같은 예쁜 모양으로 만듭니다 */
+.early-access__input {
+    width: 100%;
+    /* 부모 너비에 맞게 꽉 채웁니다 */
+    max-width: 480px;
+    /* 너무 길어지지 않게 최대 너비를 제한합니다 */
+    background-color: var(--color-white);
+    /* 배경은 깨끗한 흰색! */
+    color: var(--color-black);
+    /* 입력하는 글씨는 검은색! */
+    border: none;
+    border-radius: 30px;
+    /* .btn-primary와 똑같이 아주 둥글게 깎아줍니다 */
+    padding: var(--spacing-200) var(--spacing-500);
+    /* 버튼과 조화롭도록 안쪽 여백을 줍니다 */
+
+    /* 그림자도 버튼과 비슷하게 넣어 입체감을 줍니다 */
+    box-shadow: 1px 1px 3px rgba(7, 4, 49, 0.157);
+
+    text-align: center;
+    /* 힌트 글자(Placeholder)와 입력하는 글자를 가운데로 정렬합니다 */
+
+    /* 기본 텍스트 스타일: Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    /* 클릭했을 때 생기는 파란 테두리를 지워줍니다 */
+}
+
+/* 입력창 안의 '힌트 글자(Placeholder)' 스타일 설정 */
+.early-access__input::placeholder {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--color-gray-400);
+    /* 요청하신 대로 흐린 회색으로 설정합니다 */
+}
+
+/* 입력창 아래 버튼의 너비도 입력창과 맞추면 더 예쁩니다 */
+.early-access__form .btn-primary {
+    width: 100%;
+    max-width: 480px;
 }
 
 /* 푸터 구역 */
 .footer {
     background-color: var(--color-navy-950);
-    padding: var(--spacing-1000) 0;
+    padding: 260px 24px 48px;
+    /* 안쪽 여백: 위 260px, 좌우 24px, 아래 48px로 설정합니다 */
+
+    margin-top: -180px;
+    /* 푸터를 전체적으로 100px 위로 끌어올려서(마이너스 마진), 위에 있는 얼리 액세스 폼 밑으로 쓱 밀어 넣습니다! */
+}
+
+.footer__container {
+    padding: 0;
+    /* 부모인 .footer에 이미 여백이 있으므로, 안쪽 컨테이너의 기본 여백을 0으로 초기화합니다 */
+}
+
+.footer__logo {
+    width: 108px;
+    height: 31px;
+    /* 푸터 로고 이미지를 가로 108px, 세로 31px 크기로 정확하게 맞춰줍니다! */
+    margin-bottom: var(--spacing-500);
+    /* 로고와 아래 첫 번째 줄(전화번호) 사이의 간격을 32px로 띕니다 */
+}
+
+/* 위치(주소) 정보 정렬 */
+.footer__location {
+    display: flex;
+    /* 아이콘과 글자를 가로로 나란히 놓습니다 */
+    align-items: flex-start;
+    /* 여러 줄일 경우 아이콘을 위쪽에 맞춥니다 */
+    gap: 16px;
+    /* 아이콘과 글자 사이 간격입니다 */
+    margin-bottom: var(--spacing-200);
+    /* 아래 항목과의 세로 간격입니다 */
+}
+
+.footer__location p {
+    /* Text Preset 7 (Regular) 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    /* 주소 글씨 크기를 16px로 설정합니다 */
+    font-weight: 400;
+    line-height: 1.5;
+    /* 줄 간격을 150%로 설정해 가독성을 높입니다 */
+}
+
+/* 연락처(전화, 이메일) 개별 항목 정렬 */
+.footer__contact-item {
+    display: flex;
+    /* 아이콘과 글자를 가로로 나란히 놓습니다 */
+    align-items: center;
+    /* 아이콘과 글자의 높이를 중앙에 맞춥니다 */
+    gap: 16px;
+    /* 아이콘과 글자 사이 간격입니다 */
+    margin-bottom: var(--spacing-200);
+    /* 항목들 사이의 간격입니다 */
+}
+
+.footer__contact-item p {
+    /* Text Preset 8 적용 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    /* 연락처 글씨 크기를 14px로 설정합니다 */
+    font-weight: 400;
+    line-height: 1.5;
+    /* 줄 간격을 150%로 설정합니다 */
+}
+
+/* 첫 번째 연락처(전화번호) 아이콘 전용 세밀한 위치 조정 */
+.footer__contact .footer__contact-item:first-child .footer__icon {
+    padding: 3px 8px 8px 3px;
+    /* 전화기 아이콘을 더 예쁘게 정렬하기 위해 사방에 여백을 줍니다 */
+}
+
+/* 두 번째 연락처(이메일) 아이콘 전용 세밀한 위치 조정 */
+.footer__contact .footer__contact-item:last-child .footer__icon {
+    padding: 4px 2px;
+    /* 이메일 아이콘의 위치를 글자 높이에 맞춰 미세하게 조정합니다 */
+}
+
+/* 위치 아이콘 전용 세밀한 위치 조정 */
+.footer__location .footer__icon {
+    padding: 3px 11.62px 3px 0;
+}
+
+/* 푸터 아이콘 이미지 공통 크기 */
+.footer__icon {
+    width: 24px;
+    /* 아이콘 너비를 적당하게 설정합니다 */
+    height: 24px;
+    flex-shrink: 0;
+    /* 글자가 길어져도 아이콘 모양이 찌그러지지 않게 보호합니다 */
 }
 
 /* ========================================================
