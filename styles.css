@@ -1,23 +1,31 @@
-/* ========================================================
-   1. 물감 팔레트 준비 (CSS 변수) 
-   ======================================================== */
+/* ============================================================
+   1. CSS 변수 (Design Tokens)
+   ============================================================
+   [설계 의도]
+   디자인 시스템의 핵심 색상 팔레트, 그라데이션, 여백 단계를
+   이곳 한 군데에서 관리합니다.
+   컬러명에 숫자(950~50)를 부여해 명도 단계를 직관적으로 구분했고,
+   개발 도중 "네이비 배경색 조금 밝게 해줘"라는 요청이 생겨도
+   이 파일의 토큰 값 하나만 바꾸면 전체 UI에 즉시 반영됩니다.
+   ============================================================ */
 :root {
-    /* 색상 (Colors) */
+    /* 색상 */
     --color-navy-950: hsl(216, 53%, 9%);
     /* 푸터 배경 */
     --color-navy-900: hsl(218, 28%, 13%);
     /* 메인 배경 */
     --color-navy-850: hsl(217, 28%, 15%);
-    /* 이메일 입력 박스 배경 */
+    /* 섹션 배경 */
     --color-navy-800: hsl(219, 30%, 18%);
-    /* 추천사(Testimonials) 카드 배경 */
+    /* 카드 배경 */
     --color-navy-50: hsl(222, 36%, 91%);
 
     --color-blue-300: hsl(177, 67%, 63%);
-    /* 강조 텍스트 */
+    /* 포인트 */
     --color-blue-250: hsl(186, 61%, 72%);
+    /* 버튼 호버 */
     --color-red-500: hsl(0, 100%, 63%);
-    /* 에러 메시지 */
+    /* 에러 */
 
     --color-white: hsl(0, 100%, 100%);
     --color-black: hsl(0, 0%, 0%);
@@ -27,7 +35,7 @@
     --gradient-start: hsl(176, 68%, 64%);
     --gradient-end: hsl(198, 60%, 50%);
 
-    /* 여백 (Spacing) - 1rem을 16px 기준으로 생각합니다 */
+    /* 여백 (16px 기준) */
     --spacing-100: 0.5rem;
     --spacing-200: 1rem;
     --spacing-300: 1.5rem;
@@ -40,25 +48,35 @@
     --spacing-1000: 5rem;
 }
 
-/* ========================================================
-   2. 도화지 초기화 (Reset & Base Styles)
-   ======================================================== */
+
+/* ============================================================
+   2. Reset & Base
+   ============================================================
+   [설계 의도]
+   브라우저마다 기본 margin/padding이 달라 레이아웃이 흔들리는 것을
+   전체 선택자(*)로 한 번에 초기화합니다.
+   body에 선언한 font-family, font-size, line-height, color는
+   CSS 상속(Cascading) 원리에 의해 모든 자식 요소에 자동으로 퍼집니다.
+   덕분에 하위 클래스들은 '다른 값이 필요할 때만' 재선언하면 됩니다.
+   h1~h6은 디자인 시스템상 항상 Raleway Bold를 써야 하므로 여기서
+   전역으로 지정해 중복 선언을 방지합니다.
+   ============================================================ */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* 패딩을 넣어도 박스 크기가 커지지 않게 방지합니다 */
 }
 
+/* 본문 기준 폰트: Open Sans 14px / 1.5 line-height → 모든 자식에 상속 */
 body {
     font-family: 'Open Sans', sans-serif;
-    /* 기본 본문 폰트 */
     font-size: 14px;
+    line-height: 1.5;
     background-color: var(--color-navy-900);
     color: var(--color-white);
-    line-height: 1.5;
 }
 
+/* 제목 계층 전용 폰트: Raleway Bold → h 태그 사용 시 자동 적용 */
 h1,
 h2,
 h3,
@@ -66,7 +84,6 @@ h4,
 h5,
 h6 {
     font-family: 'Raleway', sans-serif;
-    /* 제목 폰트 */
     font-weight: 700;
 }
 
@@ -77,67 +94,79 @@ a {
 
 ul {
     list-style: none;
-    /* 리스트 앞의 점(불릿)을 지워줍니다 */
 }
 
+/* display: block 처리하지 않으면 이미지 하단에 미세한 공백이 생깁니다 */
 img {
-    max-width: 100%;
     display: block;
-    /* 이미지 하단에 미세한 공백이 생기는 걸 막아줍니다 */
+    max-width: 100%;
 }
 
-/* ========================================================
-   3. 공통 레이아웃 구조 (Mobile First 원칙!)
-   ======================================================== */
+
+/* ============================================================
+   3. 공통 컴포넌트
+   ============================================================
+   [설계 의도]
+   페이지 전역에서 반복 사용되는 껍데기(container)와
+   행동 유도 버튼(btn-primary)을 공통 클래스로 분리했습니다.
+   섹션마다 복붙하지 않아도 되므로, 수정이 필요할 때 이 한 곳만
+   변경하면 전체 레이아웃이 통일성 있게 유지됩니다.
+   ============================================================ */
+
+/* 콘텐츠를 1440px 내에서 가운데로 모아주는 레이아웃 기준 틀 */
 .container {
     width: 100%;
     max-width: 1440px;
-    /* 데스크탑 최대 너비 제한 */
     margin: 0 auto;
-    /* 중앙 정렬 */
     padding: 0 25px;
-    /* 좌우 패딩을 25px로 설정 */
 }
 
-/* 반복해서 쓰는 버튼이나 텍스트 스타일을 유틸리티로 만들어 둡니다 */
+/* CTA 버튼: 그라데이션 배경 + Raleway Bold로 시각적 임팩트를 극대화합니다.
+   transition을 선언해두면 호버 시 배경이 부드럽게 전환됩니다. */
 .btn-primary {
-    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
-    color: var(--color-white);
+    width: 240px;
+    padding: var(--spacing-200) var(--spacing-600);
     border: none;
     border-radius: 30px;
-    /* 둥근 버튼을 만듭니다 */
-    padding: var(--spacing-200) var(--spacing-600);
     cursor: pointer;
-
-    /* 너비 설정 */
-    width: 240px;
-
-    /* 그림자 설정 (X 2px, Y 3px, Blur 6px, 시안에 맞춘 불투명도 15.93%의 검은색 그림자) */
-    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.1593);
-
-    /* Text Preset 4 적용 */
     font-family: 'Raleway', sans-serif;
     font-size: 14px;
     font-weight: 700;
     line-height: 1.2;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+    color: var(--color-white);
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.1593);
+    transition: background 0.3s ease;
 }
 
-/* ========================================================
-   4. 섹션별 뼈대 (모바일 기준 - 1단 세로 배치)
-   ======================================================== */
+/* <br class="br-desktop">는 모바일에서는 줄바꿈이 불필요하므로 기본으로 숨기고,
+   데스크탑 미디어 쿼리에서 display: inline으로 활성화합니다. */
+.br-desktop {
+    display: none;
+}
+
+
+/* ============================================================
+   4. 레이아웃 & 섹션 (Mobile First)
+   ============================================================
+   [반응형 전략]
+   모바일-퍼스트 원칙을 따릅니다. 즉, 이 구역의 기본 스타일은
+   모두 375px 모바일 화면을 기준으로 작성되어 있습니다.
+   더 넓은 화면(태블릿 768px, 데스크탑 1024px)에서의 변경사항은
+   하단 미디어 쿼리 섹션(5, 6번)에서 덮어씌우는 방식으로 동작합니다.
+   ============================================================ */
+
+/* --- 4-1. Header --- */
 .header {
     padding: var(--spacing-300) 0 0;
-    /* 상단 24px, 좌우 0, 하단 0 */
     margin-bottom: var(--spacing-600);
-    /* 하단 바깥 여백 48px 추가 */
 }
 
+/* 로고(좌)와 네비게이션(우)을 양 끝으로 배치하는 Flex 컨테이너 */
 .header__container {
     display: flex;
     justify-content: space-between;
-    /* 양 끝으로 벌려줍니다 (로고-메뉴) */
     align-items: center;
-    /* 세로축 중앙 정렬 */
 }
 
 .logo__img {
@@ -146,11 +175,9 @@ img {
 }
 
 .header__nav-list {
+    /* Text Preset 5 */
     display: flex;
     gap: var(--spacing-300);
-    /* 메뉴 간격을 24px로 조정 */
-
-    /* Text Preset 5 적용 */
     font-family: 'Raleway', sans-serif;
     font-size: 12px;
     font-weight: 400;
@@ -158,499 +185,385 @@ img {
     letter-spacing: 0;
 }
 
-/* 상단 배경 영역 (헤더 + 메인 일러스트) */
+/* --- 4-2. 배경 곡선 래퍼 ---
+   [매직 넘버] padding-bottom: 20px / margin-bottom: -20px
+   이 두 값은 세트로 동작합니다. 곡선 SVG 이미지가 배경에 충분히
+   그려지도록 padding으로 공간을 확보한 뒤, 그만큼 음수 margin으로
+   아래쪽 콘텐츠(.hero-content)를 끌어올려 배경이 연속된 것처럼 보이게 합니다. */
 .bg-curvy-top {
+    padding-bottom: 20px;
+    margin-bottom: -20px;
     background-color: var(--color-navy-850);
-    /* 위쪽 영역의 색상 */
     background-image: url('./images/bg-curvy-mobile.svg');
-    /* 산 모양의 곡선 이미지 */
     background-repeat: no-repeat;
     background-position: bottom center;
-    /* 곡선을 그림 제일 아래(하단)에 붙입니다 */
     background-size: 100% auto;
-    /* 가로 길이를 꽉 채워 비율을 맞춥니다 */
-    padding-bottom: 20px;
-    /* 일러스트 아래로 배경이 더 그려지도록 여백 확보 */
-    margin-bottom: -20px;
-    /* 확보한 배경 영역 위로 아래쪽 콘텐츠가 타고 올라오게 당겨줍니다 */
 }
 
-/* 메인 소개 구역 텍스트 영역 */
+/* --- 4-3. Hero ---
+   랜딩 페이지의 첫인상을 결정하는 구역입니다.
+   일러스트 이미지 → 제목 → 설명 → CTA 버튼 순서로 시선을 유도합니다. */
 .hero-content {
     text-align: center;
     padding: 0;
-    /* 패딩을 0으로 설정하여 여백을 제거합니다 */
     margin-bottom: 140px;
-    /* 본문 아래쪽 여백 140px 추가 */
 }
 
+/* 일러스트 이미지를 수평 가운데로 정렬하고, 하단에 충분한 여백을 둡니다 */
 .hero__image {
     margin: 0 auto var(--spacing-900);
-    /* 가운데 정렬 및 하단 여백 72px */
 }
 
 .hero__title {
-    /* Text Preset 2 적용 */
-    font-family: 'Raleway', sans-serif;
+    /* Text Preset 2 — font-family/weight는 h1~h6 전역 규칙에서 상속 */
     font-size: 20px;
-    font-weight: 700;
     line-height: 1.2;
     margin-bottom: var(--spacing-300);
-    /* 하단 여백 24px */
 }
 
 .hero__desc {
-    /* Text Preset 8 적용 */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
+    /* Text Preset 8 — font-family/size/weight/line-height는 body에서 상속 */
     margin-bottom: var(--spacing-300);
-    /* 하단 여백 24px */
 }
 
-/* 주요 특징 구역 (CSS Grid 활용!) */
+/* --- 4-4. Features ---
+   CSS Grid로 특징 카드들을 배치합니다.
+   모바일에서는 1열(세로 나열), 태블릿+에서는 2열로 전환됩니다. */
 .features {
     padding: 0;
-    /* 패딩을 0으로 설정하여 기본 여백 제거 */
     margin-bottom: 160px;
-    /* 특징 섹션 하단에 160px 여백 추가 */
 }
 
+/* 모바일 기본: 1열 세로 나열. 태블릿에서 repeat(2, 1fr)로 2단 전환 */
 .features__grid {
     display: grid;
     grid-template-columns: 1fr;
-    /* 모바일에서는 1줄에 1개씩! */
-    row-gap: var(--spacing-800);
-    /* 세로(행) 간격 */
-    column-gap: var(--spacing-1000);
-    /* 가로(열) 간격 80px 설정 */
     justify-items: center;
-    /* 아이템들을 가로 중앙으로 정렬 */
+    row-gap: var(--spacing-800);
+    column-gap: var(--spacing-1000);
     text-align: center;
 }
 
+/* object-fit: contain으로 아이콘 비율을 유지하면서 정해진 틀 안에 맞춥니다 */
 .feature__icon {
     width: 80px;
     height: 80px;
     margin: 0 auto var(--spacing-300);
-    /* 가로 중앙 정렬 및 하단 여백 24px(spacing-300) 설정 */
     object-fit: contain;
-    /* 비율을 유지하면서 80x80 박스 안에 쏙 넣습니다 */
 }
 
 .feature__title {
-    /* Text Preset 2 적용 */
-    font-family: 'Raleway', sans-serif;
+    /* Text Preset 2 — font-family/weight는 h2 규칙에서 상속 */
     font-size: 20px;
-    font-weight: 700;
     line-height: 1.2;
     margin-bottom: var(--spacing-100);
-    /* 하단 여백 8px 설정 */
 }
 
 .feature__desc {
-    /* Text Preset 8 적용 */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
+    /* Text Preset 8 — body 상속값과 동일하지만
+       letter-spacing: 0은 디자인 명세상 명시적으로 선언해야 하므로 유지합니다 */
     letter-spacing: 0;
 }
 
-/* 생산성 구역 */
+/* --- 4-5. Productivity ---
+   모바일에서는 이미지(상) → 텍스트(하) 세로 배치.
+   데스크탑에서는 컨테이너에 display: flex를 주어 이미지(좌) / 텍스트(우) 2단으로 전환됩니다. */
 .productivity {
     padding: 0;
-    /* 기본 패딩을 제거하여 여백을 초기화합니다 */
     margin-bottom: 150px;
-    /* 다음 섹션과의 간격을 150px로 설정합니다 */
 }
 
+/* 모바일에서 이미지 가운데 정렬. 데스크탑에서는 margin: 0으로 초기화됩니다. */
 .productivity__image {
-    margin-bottom: var(--spacing-600);
-    /* 하단 바깥 여백 48px 추가 */
     display: block;
-    /* 마진 자동 계산을 위해 블록 요소로 설정 */
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: var(--spacing-600);
 }
 
 .productivity__title {
-    /* Text Preset 3 (Bold) 적용 */
-    font-family: 'Raleway', sans-serif;
+    /* Text Preset 3 Bold — font-family/weight는 h2 규칙에서 상속 */
     font-size: 16px;
-    font-weight: 700;
     line-height: 1.2;
     margin-bottom: var(--spacing-200);
-    /* 하단 바깥 여백 16px 추가 */
     text-align: left;
 }
 
 .productivity__desc {
-    /* Text Preset 8 적용 */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
+    /* Text Preset 8 — body에서 상속 */
     margin-bottom: var(--spacing-200);
-    /* 하단 여백 16px 설정 */
     text-align: left;
 }
 
+/* "See how Fylo works" 링크: 기본은 시안(Cyan) 색상 + 밑줄.
+   호버 시 white로 전환. transition: all로 색상/테두리 모두 부드럽게 변합니다. */
 .productivity__link {
-    /* Text Preset 8 적용 */
+    /* Text Preset 8 — body에서 상속 불가한 color, border-bottom 등 명시 */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 2px;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
-
     color: var(--color-blue-300);
-    /* 요청하신 포인트 색상(Cyan) 적용 */
     border-bottom: 1px solid var(--color-blue-300);
-    /* 아이콘까지 포함하도록 하단 테두리로 선을 그립니다 */
-    padding-bottom: 2px;
-    /* 글자와 선 사이의 미세한 간격 */
-
-    display: inline-flex;
-    /* 화살표 아이콘과 가로로 예쁘게 배치합니다 */
-    align-items: center;
-    /* 세로축 중앙 정렬 */
-    gap: 8px;
-    /* 글자와 화살표 사이 간격 */
-    transition: opacity 0.3s ease;
-    /* 부드러운 호버 효과를 위한 설정 */
-}
-
-.productivity__link:hover {
-    opacity: 0.7;
-    /* 마우스를 올렸을 때 살짝 투명해지는 효과 */
+    transition: all 0.3s ease;
 }
 
 .productivity__link-icon {
     width: 12px;
     height: 12px;
-    /* 화살표 아이콘의 크기를 12px로 맞췄습니다 */
 }
 
-/* 추천사 구역 */
+/* --- 4-6. Testimonials ---
+   CSS Grid로 후기 카드를 배치합니다.
+   모바일: 1열, 태블릿: 1열(카드 자체가 넓어짐), 데스크탑: 3열로 순차 전환됩니다.
+   따옴표 이미지는 bg-quotes.png를 배경으로 처리해 HTML 구조를 복잡하게 만들지 않았습니다. */
 .testimonials {
     margin-bottom: 150px;
-    /* 다음 섹션과의 간격을 150px로 넉넉히 띄워줍니다 */
 }
 
 .testimonials__container {
     padding: 0 var(--spacing-600);
-    /* 좌우 패딩을 48px로 설정합니다 */
 }
 
+/* [매직 넘버] padding-top: 20px / margin-top: -20px
+   배경의 따옴표 이미지가 첫 번째 카드에 가려지지 않도록
+   padding으로 공간을 벌린 뒤, margin-top 음수값으로 전체를 다시 당겨
+   따옴표만 그리드 위로 돌출되어 보이는 효과를 만듭니다. */
 .testimonials__grid {
     display: grid;
     grid-template-columns: 1fr;
-    /* 모바일(Mobile) 화면에서는 카드 1개씩 1줄(세로)로 배치합니다 */
     gap: var(--spacing-400);
-    /* 각 추천사 카드 사이의 세로 간격을 32px로 벌려줍니다 */
-
-    /* 1. 왼쪽 상단 구석에 커다란 따옴표(") 디자인 이미지를 배경으로 넣습니다 */
+    padding-top: 20px;
+    margin-top: -20px;
     background-image: url('./images/bg-quotes.png');
     background-repeat: no-repeat;
-    /* 따옴표 이미지가 타일처럼 반복되지 않게 한 번만 보여줍니다 */
     background-position: top 0 left 5px;
-    /* 따옴표 이미지를 위에서 0, 왼쪽에서 5px 정도 슬쩍 띄워서 배치합니다 */
     background-size: 32px auto;
-    /* 배경 이미지(따옴표)의 너비를 32px로 조절하고, 높이는 원본 비율에 맞게 자동으로 설정합니다 */
-
-    padding-top: 20px;
-    /* 첫 번째 카드가 따옴표 아이콘을 가리지 않도록, 패딩(안쪽 여백)으로 카드 전체 묶음을 35px 밑으로 밀어 내립니다 */
-    margin-top: -20px;
-    /* 패딩으로 늘어난 35px 만큼 바깥 여백(margin-top)을 마이너스로 주어, 따옴표 이미지만 위로 툭 튀어나오게 전체를 당겨 올립니다 */
 }
 
-/* ========================================================
-   2. 개별 추천사 카드 디자인 (박스 형태)
-   ======================================================== */
 .testimonial-card {
-    background-color: var(--color-navy-800);
-    /* 카드의 배경색을 바깥보다 살짝 밝은 네이비로 설정해 카드가 눈에 띄게 합니다 */
-    border-radius: 3.93px;
-    /* 모서리 4군데를 둥글게(5px) 깎아서 딱딱하지 않고 부드러운 박스로 만듭니다 */
     padding: 23px 20px;
-    /* 박스 안쪽 여백: 위아래 23px, 좌우 20px로 조정하여 카드 내부 공간을 설정합니다 */
+    border-radius: 3.93px;
+    background-color: var(--color-navy-800);
     box-shadow: 0 0 8px 4px rgba(56, 56, 56, 0.0459);
-    /* 카드를 은은하게 감싸는 그림자 설정: X 0, Y 0, 흐림(Blur) 8px, 확산(Spread) 4px, 색상 #383838, 불투명도 4.59% */
 }
 
-/* 3. 카드 안쪽의 평가(리뷰) 본문 텍스트 */
 .testimonial-card__desc {
-    /* Text Preset 9 (Regular) 적용 */
+    /* Text Preset 9 Regular — body 상속값과 다른 size/line-height를 명시합니다 */
     font-family: 'Open Sans', sans-serif;
     font-size: 10px;
-    /* 10px로 아주 작게 설정하여 보조적인 느낌을 줍니다 (이미지보다 작을 수 있으니 확인해 보세요!) */
     font-weight: 400;
     line-height: 1.8;
-    /* 줄 간격을 180%로 넉넉히 주어 가독성을 높입니다 */
     letter-spacing: 0.5px;
-    /* 글자 사이 간격을 살짝 벌려 줍니다 */
-
     margin-bottom: var(--spacing-200);
-    /* 리뷰 글과 아랫쪽 프로필 구간 사이의 간격을 16px로 좁혔습니다 */
 }
 
-/* 4. 카드 하단의 작성자 정보를 묶은 그룹 (사진 + 텍스트 정렬) */
+/* 아바타 이미지와 이름/직책 텍스트를 가로로 정렬하는 Flex 컨테이너 */
 .testimonial-card__author {
     display: flex;
-    /* 프로필 동그란 사진과, 그 옆의 이름/직책 텍스트를 나란히 '가로'로 정렬하는 마법 상자(Flex)입니다! */
     align-items: center;
-    /* 가로 정렬된 사진과 텍스트를 세로축 기준 한가운데로 딱 맞춰 줍니다 */
     gap: 8px;
-    /* 사진과 텍스트 사이의 틈새(간격)를 적당히 8px 벌려 줍니다 */
 }
 
-/* 작성자의 동그란 아바타 프로필 사진 */
+/* border-radius: 50%로 정사각형 이미지를 원형으로 표현합니다 */
 .author__avatar {
     width: 24px;
-    /* 가로 24px */
     height: 24px;
-    /* 세로 24px 크기의 작은 사진입니다 */
     border-radius: 50%;
-    /* 24x24 네모 박스의 모서리를 완전히 둥글려 예쁜 '동그라미'로 만듭니다! */
     object-fit: cover;
-    /* 사진이 틀 안에서 찌그러지지 않게 꽉 채워줍니다 */
 }
 
-/* 사진 오른쪽의 '이름'과 '직책'을 세로로 묶는 통 */
+/* 이름과 직책을 세로로 쌓기 위한 column 방향 Flex 컨테이너 */
 .author__info {
     display: flex;
     flex-direction: column;
-    /* 정보들이 좌우가 아닌, '이름' 위 '직책' 아래 순서로 '세로 탑'처럼 쌓이도록 방향을 바꿉니다 */
     justify-content: center;
-    /* 세로 통 안에서 글씨들이 위아래 한가운데 정렬되게 맞춥니다 */
 }
 
-/* 작성자 이름 텍스트 (강조) */
 .author__name {
-    /* Text Preset 9 (Bold) 적용 */
+    /* Text Preset 9 Bold */
     font-family: 'Open Sans', sans-serif;
-    /* 성격에 맞춰 본문용 폰트로 변경했습니다 */
     font-size: 10px;
-    /* 이름 크기를 10px로 맞췄습니다 */
     font-weight: 700;
-    /* 이름을 두껍게(Bold) 강조하여 눈에 띄게 합니다 */
     line-height: 1.5;
-    /* 줄 간격을 150%로 설정합니다 */
     letter-spacing: 0.5px;
-    /* 글자 사이를 살짝 띄워 가독성을 높였습니다 */
 }
 
-/* 작성자 직책 텍스트 (흐리게) */
 .author__role {
-    /* Text Preset 10 적용 */
+    /* Text Preset 10 */
     font-family: 'Open Sans', sans-serif;
     font-size: 7px;
-    /* 7px로 아주 작게 설정하여 정보의 위계를 조절합니다 (매우 작으니 가독성을 꼭 확인해 보세요!) */
     font-weight: 400;
     line-height: 1.5;
-    /* 줄 간격을 150%로 설정합니다 */
     letter-spacing: 0.5px;
-    /* 글자 사이를 살짝 띄워 줍니다 */
     color: var(--color-white);
-    /* 차분한 회색으로 설정해 시선이 이름에 먼저 가게 합니다 */
 }
 
-/* 이메일 구독 폼 구역 (가운데 떠있는 느낌을 위해 절대 위치 활용 예정) */
+/* --- 4-7. Early Access (이메일 구독 폼)
+   [매직 넘버] position: relative / z-index: 1
+   이 폼 박스는 시각적으로 Footer 배경 위에 '떠 있는' 것처럼 보여야 합니다.
+   Footer에 음수 margin-top을 주어 위로 끌어올리면 겹침이 발생하는데,
+   z-index: 1을 주면 이 박스가 Footer보다 앞쪽(위 레이어)에 렌더링됩니다. */
 .early-access {
-    background-color: var(--color-navy-850);
+    position: relative;
+    z-index: 1;
+    margin: 0 20px;
     border-radius: 9px;
     text-align: center;
-    margin: 0 20px;
+    background-color: var(--color-navy-850);
     box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2543);
-    /* 요청하신 그림자 설정: X 5px, Y 5px, 흐림 8px, 검은색(000000) 불투명도 25.43% */
-
-    position: relative;
-    /* 자리가 겹칠 때 누가 먼저 보일지 순서(z-index)를 정하기 위해 기준점 역할을 켭니다! */
-    z-index: 1;
-    /* 밑에서 올라오는 푸터 배경보다 이 박스가 화면에서 더 앞쪽으로 튀어나오게(1층으로) 올립니다 */
 }
 
 .early-access__container {
     padding: 40px 24px;
-    /* 박스 안쪽 여백: 위아래 40px, 좌우 24px로 설정하여 콘텐츠가 답답하지 않게 공간을 줍니다 */
 }
 
 .early-access__title {
-    /* Text Preset 2 적용 */
-    font-family: 'Raleway', sans-serif;
+    /* Text Preset 2 — font-family/weight는 h2 규칙에서 상속 */
     font-size: 20px;
-    /* 제목 크기를 20px로 설정합니다 */
-    font-weight: 700;
-    /* 제목을 두껍게 강조합니다 */
     line-height: 1.2;
-    /* 줄 간격을 120%로 설정하여 제목답게 촘촘하게 만듭니다 */
     margin-bottom: var(--spacing-200);
-    /* 제목과 아래 설명글 사이의 간격을 16px로 띕니다 */
 }
 
 .early-access__desc {
-    /* Text Preset 8 적용 */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    /* 본문 크기(14px)로 설정합니다 */
-    font-weight: 400;
-    /* 일반적인 두께로 편안하게 읽히도록 합니다 */
-    line-height: 1.5;
-    /* 줄 간격을 150%로 설정해 가독성을 높입니다 */
+    /* Text Preset 8 — body에서 상속 */
     margin-bottom: var(--spacing-400);
-    /* 설명글과 아래 입력 폼 사이의 간격을 32px로 띕니다 */
 }
 
-/* 폼 요소들을 세로로 예쁘게 정렬합니다 */
+/* 모바일: 입력창과 버튼을 세로로 쌓습니다.
+   데스크탑에서는 flex-direction: row로 전환해 가로 나란히 배치됩니다. */
 .early-access__form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--spacing-300);
-    /* 입력창과 버튼 사이를 24px 띕니다 */
 }
 
-/* 이메일 입력창을 버튼과 똑같은 예쁜 모양으로 만듭니다 */
+/* 에러 메시지를 입력창 바로 아래에 절대 위치로 붙이기 위한 기준점(relative)입니다.
+   JS에서 .error 클래스를 부모 form에 추가하면 에러 p 태그가 이 wrapper 기준으로 배치됩니다. */
+.early-access__input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* 입력창을 버튼과 동일한 pill 형태(border-radius: 30px)로 맞춰 시각적 통일감을 줍니다 */
 .early-access__input {
     width: 100%;
-    /* 부모 너비에 맞게 꽉 채웁니다 */
-    max-width: 480px;
-    /* 너무 길어지지 않게 최대 너비를 제한합니다 */
-    background-color: var(--color-white);
-    /* 배경은 깨끗한 흰색! */
-    color: var(--color-black);
-    /* 입력하는 글씨는 검은색! */
+    padding: var(--spacing-200) var(--spacing-500);
     border: none;
     border-radius: 30px;
-    /* .btn-primary와 똑같이 아주 둥글게 깎아줍니다 */
-    padding: var(--spacing-200) var(--spacing-500);
-    /* 버튼과 조화롭도록 안쪽 여백을 줍니다 */
-
-    /* 그림자도 버튼과 비슷하게 넣어 입체감을 줍니다 */
-    box-shadow: 1px 1px 3px rgba(7, 4, 49, 0.157);
-
-    text-align: center;
-    /* 힌트 글자(Placeholder)와 입력하는 글자를 가운데로 정렬합니다 */
-
-    /* 기본 텍스트 스타일: Text Preset 8 적용 */
+    outline: none;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    outline: none;
-    /* 클릭했을 때 생기는 파란 테두리를 지워줍니다 */
+    text-align: center;
+    background-color: var(--color-white);
+    color: var(--color-black);
+    box-shadow: 1px 1px 3px rgba(7, 4, 49, 0.157);
 }
 
-/* 입력창 안의 '힌트 글자(Placeholder)' 스타일 설정 */
 .early-access__input::placeholder {
-    /* Text Preset 8 적용 */
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     color: var(--color-gray-400);
-    /* 요청하신 대로 흐린 회색으로 설정합니다 */
 }
 
-/* 입력창 아래 버튼의 너비도 입력창과 맞추면 더 예쁩니다 */
+/* JS가 에러 상태를 off 해주기 전까지 에러 메시지는 항상 숨겨둡니다.
+   display: none이므로 레이아웃 공간조차 차지하지 않아 UI가 흔들리지 않습니다. */
+.early-access__error {
+    display: none;
+}
+
+/* 모바일에서는 버튼이 입력창과 동일한 max-width를 갖도록 통일합니다 */
 .early-access__form .btn-primary {
     width: 100%;
     max-width: 480px;
 }
 
-/* 푸터 구역 */
+/* --- 4-8. Footer ---
+   [매직 넘버] margin-top: -180px
+   Early Access 폼 박스와 자연스럽게 겹치도록 Footer 전체를 위로 끌어올린 값입니다.
+   padding-top: 260px는 끌어올린 만큼 내용이 Early Access 박스에 가려지지 않도록
+   확보해 두는 안전 공간입니다. 두 값은 반드시 짝을 맞춰 수정해야 합니다. */
 .footer {
-    background-color: var(--color-navy-950);
     padding: 260px 24px 48px;
-    /* 안쪽 여백: 위 260px, 좌우 24px, 아래 48px로 설정합니다 */
-
     margin-top: -180px;
-    /* 푸터를 전체적으로 100px 위로 끌어올려서(마이너스 마진), 위에 있는 얼리 액세스 폼 밑으로 쓱 밀어 넣습니다! */
+    background-color: var(--color-navy-950);
 }
 
+/* Footer 자체에서 padding을 관리하므로, 내부 컨테이너 여백은 0으로 초기화합니다 */
 .footer__container {
     padding: 0;
-    /* 부모인 .footer에 이미 여백이 있으므로, 안쪽 컨테이너의 기본 여백을 0으로 초기화합니다 */
 }
 
 .footer__logo {
     width: 108px;
     height: 31px;
-    /* 푸터 로고 이미지를 가로 108px, 세로 31px 크기로 정확하게 맞춰줍니다! */
     margin-bottom: var(--spacing-500);
-    /* 로고와 아래 첫 번째 줄(전화번호) 사이의 간격을 32px로 띕니다 */
 }
 
-/* 위치(주소) 정보 정렬 */
+/* 위치 아이콘과 주소 텍스트를 가로로 정렬.
+   align-items: flex-start로 주소가 여러 줄이 되어도 아이콘은 첫 줄 상단에 고정됩니다. */
 .footer__location {
     display: flex;
-    /* 아이콘과 글자를 가로로 나란히 놓습니다 */
     align-items: flex-start;
-    /* 여러 줄일 경우 아이콘을 위쪽에 맞춥니다 */
     gap: 16px;
-    /* 아이콘과 글자 사이 간격입니다 */
     margin-bottom: var(--spacing-200);
-    /* 아래 항목과의 세로 간격입니다 */
 }
 
 .footer__location p {
-    /* Text Preset 7 (Regular) 적용 */
+    /* Text Preset 7 Regular — body(14px) 상속값과 다른 16px이므로 명시합니다 */
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
-    /* 주소 글씨 크기를 16px로 설정합니다 */
     font-weight: 400;
     line-height: 1.5;
-    /* 줄 간격을 150%로 설정해 가독성을 높입니다 */
 }
 
-/* 연락처(전화, 이메일) 그룹 전체의 아래쪽 여백 설정 */
 .footer__contact {
     margin-bottom: 56px;
-    /* 연락처 뭉치와 그 아래 메뉴들 사이를 56px 만큼 띄워줍니다 (3.5rem) */
 }
 
-/* 연락처(전화, 이메일) 개별 항목 정렬 */
+/* 전화/이메일 아이콘과 텍스트를 가로로 정렬합니다 */
 .footer__contact-item {
     display: flex;
-    /* 아이콘과 글자를 가로로 나란히 놓습니다 */
     align-items: center;
-    /* 아이콘과 글자의 높이를 중앙에 맞춥니다 */
     gap: 16px;
-    /* 아이콘과 글자 사이 간격입니다 */
     margin-bottom: var(--spacing-200);
-    /* 항목들 사이의 간격입니다 */
 }
 
+/* 마지막 연락처(이메일) 항목 아래에는 여백이 불필요하므로 제거합니다 */
 .footer__contact-item:nth-child(2) {
     margin-bottom: 0;
-    /* 마지막 항목(이메일)의 아래쪽 여백을 없애서 깔끔하게 만듭니다 */
 }
 
-/* 푸터 네비게이션(링크 목록) 스타일 */
+.footer__contact-item p {
+    /* Text Preset 8 — body에서 상속 불가한 font-size(14px) 명시 */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+}
 
+/* 모바일에서는 링크들을 세로로 나열합니다.
+   태블릿에서는 display: contents로 전환해 li들이 그리드에 직접 참여하고,
+   데스크탑에서는 다시 display: flex로 복원합니다. */
 .footer__nav {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    /* 항목 간의 간격을 16px로 일정하게 유지합니다 */
-}
-
-.footer__nav:first-of-type {
-    margin-bottom: 16px;
-    /* 모바일에서 첫 번째 메뉴 뭉치와 두 번째 뭉치 사이의 간격입니다 */
-}
-
-.footer__nav:nth-of-type(2) {
-    gap: 40px;
-    /* 모바일에서 두 번째 메뉴 뭉치 내부 항목들 사이의 간격을 40px로 넓게 잡습니다 */
-    margin-bottom: 16px;
-    /* 모바일에서 두 번째 뭉치와 세 번째 뭉치 사이의 간격입니다 */
+    margin-bottom: 32px;
 }
 
 .footer__nav li {
     margin: 0;
-    /* 부모의 gap 속성을 사용하므로 개별 항목의 마진은 모두 제거합니다 */
 }
 
 .footer__nav a {
-    /* Text Preset 7 (Regular) 적용 */
+    /* Text Preset 7 Regular */
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -658,401 +571,622 @@ img {
     transition: color 0.3s ease;
 }
 
-.footer__nav a:hover {
-    color: var(--color-blue-300);
-    /* 마우스와 맞닿으면 색상이 시원한 포인트 컬러(Cyan)로 바뀝니다 */
-}
-
-/* 푸터 소셜 미디어 아이콘 그룹 */
+/* 소셜 아이콘들을 가운데로 모아 배치.
+   태블릿에서는 그리드로 진입, 데스크탑에서는 justify-content: flex-start로 좌측 정렬됩니다. */
 .footer__socials {
     display: flex;
     justify-content: center;
-    /* 모바일에서는 아이콘들을 옹기종기 화면 가운데로 모아줍니다 */
     align-items: center;
     gap: 11px;
-    /* 각각의 동그라미 아이콘 사이를 16px로 띕니다 */
     margin-top: 48px;
-    /* 위쪽 메뉴들과 너무 붙지 않게 48px 정도 여백을 줍니다 */
 }
 
+/* 각 소셜 아이콘을 원형 테두리 안에 중앙 배치합니다.
+   border-radius: 50%으로 정사각형 박스를 완전한 원으로 만듭니다. */
 .footer__socials a {
     display: flex;
-    /* 아이콘을 원 한가운데에 배치하기 위한 마법 상자(Flex) 설정입니다 */
     justify-content: center;
     align-items: center;
     width: 27px;
     height: 27px;
-    /* 가로세로 똑같은 32px 짜리 정사각형 박스를 만듭니다 */
     border: 1px solid var(--color-white);
-    /* 하얀색으로 얇은(1px) 실선 테두리를 두릅니다 */
     border-radius: 50%;
-    /* 정사각형 모서리를 끝까지 깎아서 완벽한 '동그라미'로 만듭니다! */
     font-size: 14px;
-    /* 동그라미 안에 들어가는 아이콘 기호의 크기를 14px로 설정합니다 */
     transition: all 0.3s ease;
-    /* 마우스를 올렸을 때 색상이 스르륵 부드럽게 변하도록 0.3초 여유를 줍니다 */
 }
 
-.footer__socials a:hover {
-    color: var(--color-blue-300);
-    /* 마우스를 올리면 아이콘(f, 새 모양 등)이 하늘색으로 바뀝니다 */
-    border-color: var(--color-blue-300);
-    /* 동시에 동그란 테두리 선 색상도 똑같은 하늘색으로 바뀝니다! */
+/* flex-shrink: 0으로 아이콘이 줄어들거나 찌그러지지 않게 보호합니다 */
+.footer__icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
 }
 
-.footer__contact-item p {
-    /* Text Preset 8 적용 */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    /* 연락처 글씨 크기를 14px로 설정합니다 */
-    font-weight: 400;
-    line-height: 1.5;
-    /* 줄 간격을 150%로 설정합니다 */
-}
-
-/* 첫 번째 연락처(전화번호) 아이콘 전용 세밀한 위치 조정 */
+/* 아이콘별로 시각적 정렬 위치가 미세하게 다르므로, padding으로 개별 조정합니다 */
 .footer__contact .footer__contact-item:first-child .footer__icon {
     padding: 3px 8px 8px 3px;
-    /* 전화기 아이콘을 더 예쁘게 정렬하기 위해 사방에 여백을 줍니다 */
 }
 
-/* 두 번째 연락처(이메일) 아이콘 전용 세밀한 위치 조정 */
 .footer__contact .footer__contact-item:last-child .footer__icon {
     padding: 4px 2px;
-    /* 이메일 아이콘의 위치를 글자 높이에 맞춰 미세하게 조정합니다 */
 }
 
-/* 위치 아이콘 전용 세밀한 위치 조정 */
 .footer__location .footer__icon {
     padding: 3px 11.62px 3px 0;
 }
 
-/* 푸터 아이콘 이미지 공통 크기 */
-.footer__icon {
-    width: 24px;
-    /* 아이콘 너비를 적당하게 설정합니다 */
-    height: 24px;
-    flex-shrink: 0;
-    /* 글자가 길어져도 아이콘 모양이 찌그러지지 않게 보호합니다 */
-}
 
-/* ========================================================
-   5. 반응형 미디어 쿼리 (화면이 넓어졌을 때 발동!)
-   ======================================================== */
-
-/* 태블릿 사이즈 (768px 이상) */
+/* ============================================================
+   5. 반응형 — 태블릿 (768px 이상)
+   ============================================================
+   [반응형 전략]
+   화면이 768px 이상이 되면 이 블록 내부의 규칙들이 기본 스타일을 덮어씁니다.
+   주요 변화 포인트:
+   - 배경 곡선 이미지가 데스크탑용 SVG로 교체됩니다.
+   - 텍스트 크기(hero titre 20→40px 등)가 커집니다.
+   - Features 그리드가 1열 → 2열로 전환됩니다.
+   - Footer가 CSS Grid 4열로 바뀝니다. 이때 .footer__nav에 display: contents를
+     사용해 <ul> 태그 자체를 '투명하게' 만들어 내부 <li>들이 그리드의
+     직접 자식인 것처럼 동작하게 하는 고급 기법을 사용합니다.
+   ============================================================ */
 @media (min-width: 768px) {
     .container {
         padding: 0 54px;
-        /* 태블릿 화면에서 컨테이너의 좌우 안쪽 여백을 54px로 넓혀서 여유 공간을 줍니다 */
     }
 
+    /* [매직 넘버] padding-bottom: 630px / margin-bottom: -630px
+       태블릿 이상에서는 곡선이 더 완만하게 펼쳐지므로 배경 공간도
+       모바일(20px) 대비 훨씬 크게 확보해야 합니다. */
     .bg-curvy-top {
-        background-image: url('./images/bg-curvy-desktop.svg');
-        /* 가로로 넓은 태블릿/데스크탑 화면에 맞춰 더 완만한 곡선 이미지를 사용합니다 */
-        background-size: 240% auto;
-        /* 배경 이미지를 가로로 240% 늘려 곡선을 더 완만하고 웅장하게 만듭니다 */
         padding-bottom: 630px;
-        /* 아래쪽 배경 영역을 630px만큼 충분히 확보합니다 */
         margin-bottom: -630px;
-        /* 확보한 배경 영역 위로 콘텐츠가 자연스럽게 타고 올라가도록 음수 여백을 줍니다 */
+        background-image: url('./images/bg-curvy-desktop.svg');
+        /* 240%로 수평 확장해 곡선이 더 완만하고 넓게 펼쳐지는 효과를 냅니다 */
+        background-size: 240% auto;
     }
 
     .header {
         padding-top: 80px;
-        /* 태블릿 화면에서 상단 여백을 80px로 시원하게 띄워줍니다 */
         margin-bottom: 100px;
-        /* 헤더 아래쪽 콘텐츠와의 간격을 100px로 넓힙니다 */
     }
 
     .logo__img {
         width: 137.89px;
         height: 40px;
-        /* 태블릿 화면에 맞춰 로고 크기를 더 키워줍니다 */
     }
 
     .header__nav-list {
-        /* Text Preset 3 (Regular) 적용 */
         font-size: 16px;
-        /* 메뉴 글자 크기를 16px로 키워 가독성을 높입니다 */
         gap: 48px;
-        /* 메뉴 항목 사이의 간격을 48px로 넓혀서 더 시원하게 배치합니다 */
     }
 
     .hero__image {
         margin-bottom: 64px;
-        /* 태블릿 화면에서 이미지와 그 아래 텍스트 사이의 간격을 64px로 조정합니다 */
     }
 
     .hero__title {
-        /* Text Preset 1 적용 */
         font-size: 40px;
-        /* 태블릿 화면에서 제목을 40px로 크게 키워 주인공답게 만듭니다 */
         margin-bottom: 48px;
-        /* 제목과 아래 설명글 사이의 간격을 48px로 넓힙니다 */
     }
 
+    /* 텍스트가 너무 넓게 퍼지지 않도록 너비를 590px로 제한하고 중앙 정렬합니다 */
     .hero__desc {
-        /* Text Preset 6 적용 */
-        font-size: 20px;
-        /* 설명글의 크기를 20px로 키워 큰 제목과 조화를 이루게 합니다 */
         width: 590px;
-        /* 태블릿 화면에서 글줄이 너무 길어지지 않게 너비를 590px로 제한합니다 */
         margin-left: auto;
         margin-right: auto;
-        /* 너비가 지정된 박스를 화면 중앙에 배치합니다 */
         margin-bottom: 48px;
-        /* 설명글과 아래 버튼 사이의 간격을 48px로 넓힙니다 */
+        font-size: 20px;
     }
 
     .btn-primary {
         width: 280px;
-        /* 태블릿 화면에 맞춰 버튼의 가로 길이를 280px로 늘려 시원하게 만듭니다 */
         height: 56px;
         font-size: 16px;
-        /* Text Preset 3 (Bold) 적용 - 글자 크기를 16px로 키워 강조합니다 */
     }
 
     .hero-content {
         margin-bottom: 150px;
-        /* 태블릿 화면에서 첫 섹션과 다음 특징 섹션 사이의 간격을 150px로 넓힙니다 */
     }
 
+    /* Features: 1열 → 2열 Grid 전환 */
     .features__grid {
         grid-template-columns: repeat(2, 1fr);
-        /* 2단 배열로 쫙! */
         row-gap: 72px;
-        /* 위아래 카드 사이 간격을 72px로 넓힙니다 */
     }
 
     .feature__icon {
         width: 104px;
         height: 104px;
-        /* 태블릿 화면에서 아이콘을 더 크고 선명하게 보여줍니다 */
         margin-bottom: 16px;
-        /* 아이콘과 제목 사이의 간격을 16px로 조정합니다 */
     }
 
     .features {
         margin-bottom: 120px;
-        /* 태블릿 화면에서 특징 섹션과 다음 섹션 사이의 간격을 120px로 설정합니다 */
     }
 
     .productivity {
         margin-bottom: 131px;
-        /* 태블릿 화면에서 생산성 섹션과 다음 추천사 섹션 사이의 간격을 72px로 조정합니다 */
     }
 
     .productivity__image {
         margin-bottom: 72px;
-        /* 태블릿 화면에서 이미지와 그 아래 텍스트 그룹 사이의 간격을 72px로 넓힙니다 */
     }
 
     .productivity__title {
-        /* Text Preset 1 적용 */
         font-size: 40px;
-        /* 태블릿 화면에서 생산성 제목을 40px로 크게 키워 시선을 사로잡습니다 */
         margin-bottom: 24px;
-        /* 제목과 아래 설명글 사이의 간격을 24px로 조정합니다 */
     }
 
     .productivity__desc {
-        /* Text Preset 7 (Regular) 적용 */
         font-size: 16px;
-        /* 태블릿 화면에서 본문 글자 크기를 16px로 키워 눈이 편안하게 읽히도록 합니다 */
     }
 
+    /* 두 번째 단락 아래에만 별도 여백을 주어 링크와 자연스럽게 분리합니다 */
     .productivity__desc:nth-of-type(2) {
         margin-bottom: 24px;
-        /* 두 번째 설명글 아래에 24px 여백을 주어 링크와의 간격을 벌립니다 */
     }
 
     .productivity__link {
-        /* Text Preset 7 (Regular) 적용 */
         font-size: 16px;
-        /* 태블릿 화면에서 링크 글자 크기를 16px로 키워 눈에 더 잘 띄게 합니다 */
     }
 
     .testimonials__container {
         padding: 0 118px;
-        /* 태블릿 화면에서 추천사 카드들이 너무 넓게 퍼지지 않도록 좌우 여백을 118px로 넓게 잡습니다 */
     }
 
+    /* [매직 넘버] padding-top: 100px / margin-top: -100px
+       태블릿에서 따옴표 아이콘이 더 크게(60px) 표시되므로,
+       카드와의 겹침을 방지하기 위해 패딩도 크게 확보합니다. */
     .testimonials__grid {
-        background-size: 60px auto;
-        /* 배경 따옴표 크기를 60px로 조정하여 디자인 균형을 맞춥니다 */
-        background-position: top 60px left 12px;
-        /* 따옴표 위치를 위에서 60px, 왼쪽에서 12px 지점으로 정밀하게 옮깁니다 */
-        padding-top: 100px;
-        /* 따옴표가 카드와 겹치지 않게 위쪽 안쪽 여백을 60px 확보합니다 */
-        margin-top: -100px;
-        /* 늘어난 패딩만큼 전체를 위로 당겨서 따옴표만 쏙 튀어나오게 연출합니다 */
         gap: 40px;
-        /* 추천사 카드들 사이의 간격은 40px를 유지합니다 */
+        padding-top: 100px;
+        margin-top: -100px;
+        background-size: 60px auto;
+        background-position: top 60px left 12px;
     }
 
+    /* 태블릿에서 카드가 갑자기 작아지지 않도록 min-width로 하한선을 둡니다 */
     .testimonial-card {
         width: 91%;
         min-width: 480px;
         max-width: 720px;
-        /* 768px 화면 기준 딱 480px(62.5%)로 시작해 비율에 맞춰 유동적으로(Fluid) 커지도록 뷰포트 너비 단위를 사용하고, 안전장치로 한계를 둡니다 */
         padding: 40px;
-        /* 카드 안쪽 여백을 40px로 넉넉히 주어 내용이 더 돋보이게 합니다 */
         margin: 0 auto;
-        /* 화면 중앙에 예쁘게 배치되도록 자동 여백을 설정합니다 */
     }
 
     .testimonial-card__desc {
-        /* Text Preset 8 적용 */
         font-size: 14px;
-        /* 태블릿 화면에서 추천사 본문 크기를 14px로 키워 가독성을 높입니다 */
         margin-bottom: 24px;
-        /* 본문 글과 아래 작성자 프로필 사이의 간격을 24px로 넓힙니다 */
     }
 
     .testimonials {
         margin-bottom: 80px;
-        /* 태블릿 화면에서 추천사 섹션과 다음 섹션 사이의 간격을 80px로 설정합니다 */
     }
 
     .early-access {
         margin-left: 144px;
         margin-right: 144px;
-        /* 태블릿 화면에서 구독 폼 박스가 너무 넓게 퍼지지 않도록 좌우 여백을 144px로 넓게 잡습니다 */
     }
 
     .early-access__container {
         padding: 48px 40px;
-        /* 박스 내부의 콘텐츠들이 답답하지 않도록 안쪽 여백을 위아래 48px, 좌우 40px로 넉넉히 줍니다 */
     }
 
     .early-access__form {
         gap: 16px;
-        /* 태블릿 화면에서는 입력창과 버튼 사이의 간격을 16px로 좁혀 더 촘촘하고 정돈된 느낌을 줍니다 */
     }
 
+    /* 태블릿부터는 입력 텍스트를 자연스럽게 왼쪽 정렬합니다 */
     .early-access__input {
         height: 48px;
-        /* 입력창의 높이를 48px로 고정하여 버튼과 대칭을 맞춥니다 */
-        text-align: left;
         padding-left: 32px;
-        /* 왼쪽 정렬 시 글자가 테두리에 너무 붙지 않도록 32px의 여백을 줍니다 */
+        text-align: left;
     }
 
     .early-access__form .btn-primary {
         height: 48px;
-        /* 버튼의 높이를 48px로 설정하여 입력창과 통일감을 줍니다 */
-        /* Text Preset 4 적용 */
         font-size: 14px;
-        /* 얼리 액세스 버튼에는 14px 크기의 Text Preset 4를 적용해 단정한 느낌을 줍니다 */
     }
 
+    /* [매직 넘버] padding-top: 260px / margin-top: -170px
+       Early Access 폼과 겹치기 위한 네거티브 마진 + 여백 세트.
+       모바일(-180px)보다 조금 작은 이유는 태블릿에서 폼 박스 높이가 더 작아지기 때문입니다. */
     .footer {
-        margin-top: -170px;
-        /* 태블릿 화면에서 푸터를 170px 위로 당겨서, 위에 둥둥 떠 있는 얼리 액세스 가입 폼 아래로 쓱 들어가게 만듭니다! */
         padding: 260px 56px 64px;
-        /* 태블릿 화면에 맞춰 좌우 여백을 56px, 아래쪽 여백을 64px로 넉넉하게 조정합니다 (상단 260px 고정) */
-    }
-
-    .footer__container {
-        padding: 0;
-        /* 태블릿 화면에서는 부모인 .footer에서 여백을 관리하므로, 내부 컨테이너의 패딩은 0으로 깔끔하게 비워둡니다 */
+        margin-top: -170px;
     }
 
     .footer__logo {
         margin-bottom: 56px;
-        /* 태블릿 화면에서 로고와 아래 연락처 정보 사이의 간격을 56px로 넓게 조정합니다 */
     }
 
+    /* Footer를 4열 Grid로 전환합니다:
+       1열: 주소(location), 2열: 연락처(contact), 3열: 메뉴1(nav), 4열: 메뉴2+소셜 */
     .footer__grid {
         display: grid;
-        grid-template-columns: auto auto auto 1fr;
-        /* 네비게이션 3분할에 맞춰 4열 구조로 변경합니다 */
-        column-gap: 60px;
-        /* 항목 간의 간격을 60px로 여유롭게 설정합니다 */
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        align-items: flex-start;
+        column-gap: 40px;
+        row-gap: 16px;
     }
 
-    .footer__location,
-    .footer__contact {
-        margin: 0;
-        /* 그리드 내부에 배치되므로 불필요한 바깥 여백을 모두 지워 깔끔하게 만듭니다 */
-    }
-
+    /* 주소 영역을 1~3열(3칸)에 걸쳐 넉넉하게 배치합니다 */
     .footer__location {
         grid-column: 1 / 4;
-        /* 위치 정보는 1~3열을 모두 차지하게 가로로 쭉 넓혀줍니다! */
-        width: 379px;
-        /* 위치 정보 구역의 전체 너비를 379px로 설정하여 내부 아이콘과 글이 조화롭게 배치되도록 합니다 */
-        margin-bottom: 56px;
-        /* 태블릿 화면에서도 아래쪽 메뉴와의 일관된 거리감을 위해 56px의 여백을 줍니다 */
+        grid-row: 1;
+        max-width: 379px;
+        margin: 0 0 48px;
     }
 
+    /* 연락처를 4열(마지막 칸)에 배치합니다 */
     .footer__contact {
-        width: 172px;
-        /* 연락처 정보의 너비를 172px로 고정합니다 */
-        justify-self: end;
-        /* 그리드 칸 안에서 연락처 정보를 오른쪽 끝으로 밀어 넣어 전체적인 좌우 밸런스를 맞춥니다 */
+        grid-column: 4;
+        grid-row: 1;
+        margin: 0 0 48px;
     }
 
     .footer__contact .footer__contact-item:first-child .footer__icon {
         padding: 3px;
-        /* 태블릿 화면에서 전화번호 아이콘의 위치를 정교하게 맞추기 위해 사방에 3px의 여백을 줍니다 */
     }
 
     .footer__contact-item:first-child {
         margin-bottom: 24px;
-        /* 태블릿 화면에서 전화번호와 이메일 사이의 간격을 24px로 넉넉히 띕니다 */
     }
 
+    /* [고급 기법] display: contents
+       이 값을 <ul>에 적용하면 <ul> 태그 자체의 박스가 사라지고
+       내부의 <li> 들이 마치 .footer__grid의 직접 자식인 것처럼
+       그리드 아이템으로 동작하게 됩니다.
+       덕분에 HTML 구조를 바꾸지 않고도 <li> 하나하나를 그리드 셀에 정밀하게 배치할 수 있습니다. */
     .footer__nav {
-        margin: 0;
-        /* 태블릿 화면에서는 모든 메뉴 열을 가로로 정렬하므로, 모바일에서 주었던 하단 여백을 모두 지워 윗선을 맞춥니다 */
+        display: contents;
     }
 
-    .footer__nav:nth-of-type(2) {
-        gap: 16px;
-        margin: 0;
-        /* 태블릿 화면에서는 다른 네비게이션들과 동일한 간격과 마진을 갖도록 초기화합니다 */
+    /* 1번 ul: About Us(1열2행), Jobs(1열3행), Press(1열4행), Blog(2열2행) */
+    .footer__nav:nth-of-type(1) li:nth-child(1) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .footer__nav:nth-of-type(1) li:nth-child(2) {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .footer__nav:nth-of-type(1) li:nth-child(3) {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    .footer__nav:nth-of-type(1) li:nth-child(4) {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    /* 2번 ul: Contact Us(2열3행), Terms(3열2행), Privacy(3열3행) */
+    .footer__nav:nth-of-type(2) li:nth-child(1) {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    .footer__nav:nth-of-type(2) li:nth-child(2) {
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+    .footer__nav:nth-of-type(2) li:nth-child(3) {
+        grid-column: 3;
+        grid-row: 3;
     }
 
     .footer__nav li {
         margin: 0;
-        /* 상위에서 설정된 gap 속성이 그대로 상속되어 간격이 유지되므로, li의 마진은 0으로 계속 유지합니다 */
     }
 
+    /* 소셜 아이콘 묶음을 4열 2행에 배치하고, 아이콘을 왼쪽 상단부터 정렬합니다 */
     .footer__socials {
-        width: 172px;
-        /* 소셜 아이콘 구역의 너비를 연락처와 동일하게 172px로 맞춰 대칭을 이룹니다 */
-        margin: 0;
-        /* 방해 요소인 margin-top 제거 */
-        justify-self: end;
-        /* 그리드 칸(1fr)의 오른쪽 끝으로 박스 전체를 밀어냅니다 */
+        grid-column: 4;
+        grid-row: 2;
         justify-content: flex-start;
-        /* 박스 내부의 아이콘들을 왼쪽부터 정렬하여 배치합니다 */
         align-items: flex-start;
-        /* 윗선 정렬: 소셜 아이콘이 네비게이션 글자의 윗선과 정확히 똑같은 높이부터 시작하도록 설정합니다! */
         gap: 16px;
-        /* 태블릿 화면에 맞춰 동그란 아이콘들 사이의 간격을 16px로 넓게 잡습니다 */
+        margin: 0;
     }
 
     .footer__socials a {
         width: 31px;
         height: 31px;
-        /* 태블릿 화면에 맞춰 동그란 아이콘 박스의 크기를 31px 정사이즈로 키워 가독성을 높입니다 */
     }
 }
 
-/* 데스크탑 사이즈 (1024px 이상) */
+
+/* ============================================================
+   6. 반응형 — 데스크탑 (1024px 이상)
+   ============================================================
+   [반응형 전략]
+   1024px 이상에서 작동하는 최종 레이아웃입니다.
+   주요 변화 포인트:
+   - Productivity 섹션: 이미지(좌) / 텍스트(우) 2단 Flex 레이아웃으로 전환.
+   - Footer: 5열 Grid(3fr 2fr 1fr 1fr 1fr)로 확장.
+             태블릿에서 display:contents로 그리드에 직접 참여했던 <li>들은
+             .footer__nav가 다시 display:flex로 복원되면서 정상적인 목록으로 돌아옵니다.
+   - Early Access 폼: 입력창 + 버튼이 column → row 방향으로 전환되어 가로로 나란히 배치.
+   - 호버(Hover) 효과: 마우스 입력이 정밀한 데스크탑에서만 적용합니다.
+   ============================================================ */
 @media (min-width: 1024px) {
-    .testimonials__grid {
-        grid-template-columns: repeat(3, 1fr);
-        /* 추천사 3장을 한 줄에 쫙! */
+
+    /* --- 공통 --- */
+    .container {
+        padding-left: 80px;
+        padding-right: 80px;
     }
 
+    /* 모바일/태블릿에서 숨겨두었던 제목 줄바꿈을 데스크탑에서만 활성화합니다 */
+    .br-desktop {
+        display: inline;
+    }
+
+    /* --- Header --- */
+    .header {
+        margin-bottom: 64px;
+    }
+
+    .logo__img {
+        width: 176px;
+        height: 51.05px;
+    }
+
+    /* --- Hero --- */
+    /* max-width: 734px으로 히어로 텍스트 블록이 지나치게 넓어지지 않게 제한합니다 */
+    .hero__container {
+        max-width: 734px;
+        padding: 0;
+    }
+
+    .hero__image {
+        margin-bottom: 56px;
+    }
+
+    .hero__title {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 40px;
+    }
+
+    .hero__desc {
+        margin-bottom: 32px;
+    }
+
+    .hero-content {
+        margin-bottom: 146px;
+    }
+
+    /* --- Features --- */
+    /* max-width: 907px으로 2열 카드가 너무 넓게 퍼지지 않게 제한하고 중앙 배치합니다 */
+    .features {
+        max-width: 907px;
+        margin: 0 auto 146px;
+    }
+
+    .features__container {
+        padding: 0;
+    }
+
+    /* column-gap: 160px으로 좌우 카드 사이에 시원한 호흡을 줍니다 */
+    .features__grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 80px;
+        column-gap: 160px;
+    }
+
+    /* --- Productivity ---
+       핵심 변화: .productivity__container에 display: flex를 적용해
+       이미지(좌)와 텍스트 콘텐츠(우)가 가로로 나란히 배치됩니다.
+       모바일에서 이미지에 적용했던 margin(가운데 정렬용, 하단 여백)을
+       margin: 0으로 초기화하여 Flex 정렬에 맡깁니다. */
+    .productivity {
+        max-width: 1186.76px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 120px;
+    }
+
+    .productivity__container {
+        display: flex;
+        align-items: center;
+        gap: 56px;
+        padding: 0;
+    }
+
+    /* 모바일/태블릿의 가운데 정렬 마진과 하단 여백을 초기화합니다 */
+    .productivity__image {
+        margin: 0;
+    }
+
+    .productivity__title {
+        margin-bottom: 32px;
+    }
+
+    /* --- Testimonials ---
+       핵심 변화: 1열 → 3열 Grid로 전환됩니다.
+       따옴표 이미지를 그리드에서 컨테이너로 이동했으므로
+       그리드의 background-image는 none으로 제거합니다. */
+    .testimonials {
+        max-width: 1281px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 220px;
+    }
+
+    /* 따옴표 이미지를 그리드 대신 컨테이너 배경으로 이동해
+       데스크탑의 3열 구조와 자연스럽게 어우러지도록 합니다 */
+    .testimonials__container {
+        padding: 40px 0 0;
+        background-image: url('./images/bg-quotes.png');
+        background-repeat: no-repeat;
+        background-position: top 5px left 47px;
+        background-size: 55px auto;
+    }
+
+    .testimonials__grid {
+        max-width: 1180px;
+        margin: 0 auto;
+        grid-template-columns: repeat(3, 1fr);
+        padding-top: 0;
+        margin-top: 0;
+        background-image: none;
+    }
+
+    /* 태블릿에서 설정한 min-width 제약을 해제하고 그리드 비율(1fr)에 맡깁니다 */
     .testimonial-card {
         width: 100%;
         min-width: unset;
-        max-width: unset;
-        /* 태블릿의 뷰포트(vw) 단위와 제약들을 모두 해제하고 부모 그리드(1fr)에 맞춰 100%로 유연하게 늘어나도록 리셋합니다! */
+        max-width: 360px;
+        padding: 32px 24px;
+    }
+
+    /* --- Early Access ---
+       핵심 변화: 폼 레이아웃이 column → row로 전환됩니다.
+       입력창과 버튼이 가로로 나란히 배치되며, 에러 메시지는
+       JS가 폼에 .error 클래스를 추가할 때 position:absolute로 나타납니다. */
+    .early-access {
+        max-width: 863px;
+        margin: 0 auto;
+    }
+
+    /* 데스크탑에서는 제목을 40px(Text Preset 1)으로 더 크게 표시합니다 */
+    .early-access__title {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    /* max-width: 673px은 한 줄에 너무 많은 글자가 들어오지 않는 이상적인 읽기 너비입니다 */
+    .early-access__desc {
+        max-width: 673px;
+        margin: 0 auto 32px;
+    }
+
+    /* 세로 배치에서 가로 배치로 전환. align-items: flex-start로 입력창과 버튼의 윗선을 맞춥니다 */
+    .early-access__form {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 24px;
+    }
+
+    .early-access__input-wrapper {
+        max-width: 480px;
+        text-align: left;
+    }
+
+    /* [JS 연동 CSS]
+       script.js의 submit 핸들러가 폼(.early-access__form)에 .error 클래스를 추가하면
+       이 규칙이 발동해 에러 메시지를 입력창 아래(bottom: -24px)에 절대 위치로 표시합니다.
+       display: none → display: block 전환이 핵심이며,
+       position: absolute이므로 버튼 위치를 밀어내지 않습니다. */
+    .early-access__form.error .early-access__error {
+        position: absolute;
+        left: 32px;
+        bottom: -24px;
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1.5;
+        letter-spacing: 0.5px;
+        color: var(--color-red-500);
+    }
+
+    /* 데스크탑에서 버튼은 고정 너비 200px로 입력창보다 작게 설정해 비율을 맞춥니다 */
+    .early-access__form .btn-primary {
+        width: 200px;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    /* --- Footer ---
+       핵심 변화: 5열(3fr 2fr 1fr 1fr 1fr) Grid로 확장됩니다.
+       태블릿에서 display:contents였던 .footer__nav가 display: flex로 복원되어
+       <ul> 태그가 다시 정상적인 Flex 컨테이너로 기능합니다.
+       [매직 넘버] padding-top: 150px / margin-top: -130px
+       모바일/태블릿보다 Early Access 폼이 더 작은 영역을 차지하므로
+       겹침 값도 이에 맞춰 조정한 값입니다. */
+    .footer {
+        padding: 150px 100px 64px;
+        margin-top: -130px;
+    }
+
+    /* 5열 비율: 주소(3fr) | 연락처(2fr) | 메뉴1(1fr) | 메뉴2(1fr) | 소셜(1fr) */
+    .footer__grid {
+        grid-template-columns: 3fr 2fr 1fr 1fr 1fr;
+        align-items: flex-start;
+    }
+
+    /* 태블릿에서 수동으로 지정했던 grid-column/row를 초기화합니다.
+       5열 자동 배치 흐름(auto)에 맡기면 됩니다. */
+    .footer__location,
+    .footer__contact,
+    .footer__nav,
+    .footer__socials {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    /* 태블릿에서 display: contents로 투명화했던 <ul>을 Flex 컨테이너로 복원합니다.
+       이제 <li>들은 그리드가 아닌, 이 ul의 Flex 자식으로 동작합니다. */
+    .footer__nav {
+        display: flex;
+    }
+
+    /* --- 호버 효과 ---
+       터치 기반의 모바일·태블릿에서는 hover 상태가 어색하게 남아있을 수 있어
+       데스크탑 미디어 쿼리 안에서만 hover 스타일을 선언합니다. */
+
+    /* CTA 버튼 호버: 그라데이션 배경 → Blue 250 단색으로 부드럽게 전환 */
+    .btn-primary:hover {
+        background: var(--color-blue-250);
+    }
+
+    /* Productivity 링크 호버: 시안 색상 → 흰색(글자 + 밑줄 동시 변경) */
+    .productivity__link:hover {
+        color: var(--color-white);
+        border-color: var(--color-white);
+    }
+
+    /* 링크 호버 시 SVG 화살표도 흰색으로 변환합니다.
+       이미지라 color를 쓸 수 없으므로, filter로 밝기 0(검정) → 반전(흰색) 처리합니다. */
+    .productivity__link:hover .productivity__link-icon {
+        filter: brightness(0) invert(1);
+    }
+
+    /* 푸터 네비게이션 링크 호버: 흰색 + Bold 처리로 시각적 피드백을 줍니다 */
+    .footer__nav a:hover {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.5;
+        letter-spacing: 0;
+        color: var(--color-white);
+    }
+
+    /* 소셜 아이콘 호버: 아이콘 색상 + 원형 테두리 색상을 시안으로 동시 변경 */
+    .footer__socials a:hover {
+        color: var(--color-blue-300);
+        border-color: var(--color-blue-300);
+    }
+
+    /* 헤더 네비게이션 링크 호버: Bold 처리로 선택 상태를 시각적으로 강조합니다 */
+    .nav__link:hover {
+        font-family: 'Raleway', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    /* [매직 넘버] padding-bottom: 510px / margin-bottom: -510px
+       데스크탑에서는 곡선 배경 이미지의 비율이 바뀌므로
+       배경이 충분히 아래까지 그려지도록 태블릿(630px)보다 줄인 값을 사용합니다. */
+    .bg-curvy-top {
+        padding-bottom: 510px;
+        margin-bottom: -510px;
+        background-size: 100% auto;
     }
 }
