@@ -17,7 +17,6 @@
 ![Project Screenshot](./fylo_dark_theme_landing_page_2.png)
 ![Project Screenshot](./fylo_dark_theme_landing_page_3.png)
 ![Project Screenshot](./fylo_dark_theme_landing_page_4.png)
-![Project Screenshot](./fylo_dark_theme_landing_page_5.png)
 
 ### Links
 
