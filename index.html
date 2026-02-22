@@ -15,6 +15,9 @@
     href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
 
+  <!-- 폰트어썸(FontAwesome) 아이콘 스타일시트 연결 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- 방금 만든 우리의 메인 스타일시트 연결! -->
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -216,16 +219,37 @@
           <li><a href="#">About Us</a></li>
           <li><a href="#">Jobs</a></li>
           <li><a href="#">Press</a></li>
-          <li><a href="#">Blog</a></li>
         </ul>
 
         <ul class="footer__nav">
+          <li><a href="#">Blog</a></li>
           <li><a href="#">Contact Us</a></li>
+        </ul>
+
+        <ul class="footer__nav">
           <li><a href="#">Terms</a></li>
           <li><a href="#">Privacy</a></li>
         </ul>
 
-        <!-- TODO: Social Icons (FontAwesome 등 활용) -->
+        <!-- 소셜 미디어 아이콘 그룹 (FontAwesome 활용) -->
+        <ul class="footer__socials">
+          <li>
+            <!-- aria-label을 써서 스크린 리더(시각장애인용 낭독기)가 "페이스북"이라고 읽을 수 있게 해줍니다 -->
+            <a href="#" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" aria-label="Twitter">
+              <i class="fa-brands fa-twitter" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a href="#" aria-label="Instagram">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </footer>
